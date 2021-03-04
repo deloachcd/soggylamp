@@ -24,7 +24,7 @@ fi
 USER_DISTRO="$(cat /etc/os-release | egrep '^NAME' | awk -F '"' '{ print $2 }')"
 if [[ "$USER_DISTRO" == *"openSUSE"* ]]; then
     PKG_CMD="sudo zypper in"
-    PKG_LIST="wget unzip cmake xorg-x11-devel"
+    PKG_LIST="wget unzip cmake xorg-x11-devel python"
 elif [[ "$USER_DISTRO" == *"Ubuntu"* ]]; then
     PKG_CMD="sudo apt install"
 else
@@ -84,18 +84,6 @@ if [[ ! -d glm ]]; then
     rm glm-$GLM_RELEASE.zip
 fi
 
-# Build dependencies with CMake
-cd glfw
-cmake .
-make
-cd ..
-
 cd gl3w
-cmake .
-make
-cd ..
-
-cd glm
-cmake .
-make
+python gl3w_gen.py
 cd ..
