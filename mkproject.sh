@@ -24,9 +24,10 @@ fi
 USER_DISTRO="$(cat /etc/os-release | egrep '^NAME' | awk -F '"' '{ print $2 }')"
 if [[ "$USER_DISTRO" == *"openSUSE"* ]]; then
     PKG_CMD="sudo zypper in"
-    PKG_LIST="wget unzip cmake xorg-x11-devel python"
+    PKG_LIST="wget unzip cmake xorg-x11-devel python3 ctags"
 elif [[ "$USER_DISTRO" == *"Ubuntu"* ]]; then
     PKG_CMD="sudo apt install"
+    PKG_LIST=""  # TODO: figure out ubuntu dependencies
 else
     echo "Unfortunately, this provisioner does not yet support \`$USER_DISTRO\`"
     exit -1
@@ -84,11 +85,16 @@ if [[ ! -d glm ]]; then
     rm glm-$GLM_RELEASE.zip
 fi
 
+# Use script to generate gl3w.c and gl3w.h
 cd gl3w
-python gl3w_gen.py
+python3 gl3w_gen.py
 cd ..
 
-# Ensure syntastic can see our headers
+# Back to project root to generate tags for vim to use
+cd ..
+ctags -Rf tags
+
+# Ensure syntastic can see our headers (for vim)
 SYNTASTIC_HEADERS_DIR="$HOME/.local/include/syntastic-headers"
 if [[ ! -d $SYNTASTIC_HEADERS_DIR ]]; then
     mkdir $SYNTASTIC_HEADERS_DIR
