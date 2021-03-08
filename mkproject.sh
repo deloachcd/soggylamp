@@ -87,3 +87,21 @@ fi
 cd gl3w
 python gl3w_gen.py
 cd ..
+
+# Ensure syntastic can see our headers
+SYNTASTIC_HEADERS_DIR="$HOME/.local/include/syntastic-headers"
+if [[ ! -d $SYNTASTIC_HEADERS_DIR ]]; then
+    mkdir $SYNTASTIC_HEADERS_DIR
+fi
+
+if [[ ! -e $SYNTASTIC_HEADERS_DIR/GL ]]; then
+    ln -s $PROJECT_PATH/deps/gl3w/include/GL $SYNTASTIC_HEADERS_DIR/GL
+fi
+
+if [[ ! -e $SYNTASTIC_HEADERS_DIR/GLFW ]]; then
+    ln -s $PROJECT_PATH/deps/glfw/include/GLFW  $SYNTASTIC_HEADERS_DIR/GLFW
+fi
+
+if [[ ! -e $SYNTASTIC_HEADERS_DIR/glm ]]; then
+    ln -s $PROJECT_PATH/deps/glm/glm $SYNTASTIC_HEADERS_DIR/glm
+fi
