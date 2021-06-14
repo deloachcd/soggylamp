@@ -25,9 +25,9 @@ USER_DISTRO="$(cat /etc/os-release | egrep '^NAME' | awk -F '"' '{ print $2 }')"
 if [[ "$USER_DISTRO" == *"openSUSE"* ]]; then
     PKG_CMD="sudo zypper in"
     PKG_LIST="wget unzip cmake xorg-x11-devel python3 ctags"
-elif [[ "$USER_DISTRO" == *"Ubuntu"* ]]; then
+elif [[ "$USER_DISTRO" == *"Ubuntu"* || "$USER_DISTRO" == *"Debian"* ]]; then
     PKG_CMD="sudo apt install"
-    PKG_LIST=""  # TODO: figure out ubuntu dependencies
+    PKG_LIST="wget unzip cmake exuberant-ctags xorg-dev"  # TODO: figure out ubuntu dependencies
 else
     echo "Unfortunately, this provisioner does not yet support \`$USER_DISTRO\`"
     exit -1
