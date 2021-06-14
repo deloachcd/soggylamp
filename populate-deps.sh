@@ -14,6 +14,7 @@ GL3W_COMMIT_SHA=latest
 # ---- actual provisioning logic below this line ----
 if [[ -z "$1" ]]; then
     echo "Usage: ./provisioner.sh <project_path>"
+    echo "Run this from the directory which will contain the project root."
     exit -1 
 else
     PROJECT_PATH="$1"
@@ -38,6 +39,10 @@ if [[ ! -z "$PKG_CMD" ]]; then
 fi
 
 # We're done with argument parsing and system wide stuff by now
+if [[ ! "$PROJECT_PATH" == "$PWD"* ]]; then
+    PROJECT_PATH="$PWD/$PROJECT_PATH"
+fi
+
 if [[ ! -d $PROJECT_PATH ]]; then
     mkdir $PROJECT_PATH
 fi
